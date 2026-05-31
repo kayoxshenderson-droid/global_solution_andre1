@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from main import MissionMonitor
+from mission_monitor.monitor import MissionMonitor
 
 
 class MissionMonitorTests(unittest.TestCase):
@@ -23,4 +23,3 @@ class MissionMonitorTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

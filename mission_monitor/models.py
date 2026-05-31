@@ -1,17 +1,15 @@
-"""Modelos de dados da missao espacial."""
-from __future__ import annotations
+"""Modelos simples usados pelo monitor."""
 
 from dataclasses import dataclass, field
-from enum import Enum
 
 
-class Severity(str, Enum):
+class Severity:
     INFO = "INFO"
     WARNING = "WARNING"
     CRITICAL = "CRITICAL"
 
 
-@dataclass(slots=True)
+@dataclass
 class ModuleReading:
     name: str
     temperature_c: float
@@ -21,15 +19,15 @@ class ModuleReading:
     status: str = "OK"
 
 
-@dataclass(slots=True)
+@dataclass
 class Alert:
-    severity: Severity
+    severity: str
     title: str
     detail: str
     action: str
 
 
-@dataclass(slots=True)
+@dataclass
 class MissionSnapshot:
     timestamp: str
     scenario: str
@@ -44,7 +42,7 @@ class MissionSnapshot:
     decisions: list[str] = field(default_factory=list)
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True)
 class ScenarioProfile:
     name: str
     generation_multiplier: float

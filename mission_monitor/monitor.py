@@ -1,5 +1,4 @@
-"""Classe principal de monitoramento da missao espacial."""
-from __future__ import annotations
+"""Simulador simples da missão."""
 
 import math
 import random
@@ -11,8 +10,6 @@ from mission_monitor.scenarios import SCENARIOS
 
 
 class MissionMonitor:
-    """Simula e monitora os sistemas energeticos de uma missao espacial."""
-
     def __init__(self, scenario_name: str = "Operacao nominal", seed: int = 42) -> None:
         self.random = random.Random(seed)
         self.set_scenario(scenario_name)
@@ -20,6 +17,7 @@ class MissionMonitor:
     def set_scenario(self, scenario_name: str) -> None:
         if scenario_name not in SCENARIOS:
             raise ValueError(f"Cenario invalido: {scenario_name}")
+
         self.scenario = SCENARIOS[scenario_name]
         self.step_index = 0
         self.battery_soc_pct = self.scenario.battery_start_pct
@@ -27,21 +25,23 @@ class MissionMonitor:
     def next_snapshot(self) -> MissionSnapshot:
         self.step_index += 1
 
+        # Luz solar muda um pouco a cada leitura
         sunlight = 0.55 + 0.45 * math.sin(self.step_index / 3.0)
-        generation_kw = max(
-            0.6,
-            (15.0 * sunlight * self.scenario.generation_multiplier) + self.random.uniform(-0.5, 0.8),
-        )
-        consumption_kw = max(
-            5.0,
-            (9.2 * self.scenario.consumption_multiplier) + self.random.uniform(-0.4, 0.6),
-        )
+
+        # Geração e consumo básicos
+        generation_kw = 15.0 * sunlight * self.scenario.generation_multiplier
+        generation_kw += self.random.uniform(-0.5, 0.8)
+        generation_kw = max(0.6, generation_kw)
+
+        consumption_kw = 9.2 * self.scenario.consumption_multiplier
+        consumption_kw += self.random.uniform(-0.4, 0.6)
+        consumption_kw = max(5.0, consumption_kw)
+
         net_kw = generation_kw - consumption_kw
 
-        self.battery_soc_pct = max(
-            0.0,
-            min(100.0, self.battery_soc_pct + (net_kw * 1.8) + self.random.uniform(-0.6, 0.4)),
-        )
+        # Estado da bateria
+        battery_change = (net_kw * 1.8) + self.random.uniform(-0.6, 0.4)
+        self.battery_soc_pct = max(0.0, min(100.0, self.battery_soc_pct + battery_change))
 
         modules = [
             ModuleReading(
@@ -87,6 +87,7 @@ class MissionMonitor:
             generation=generation_kw,
             consumption=consumption_kw,
         )
+
         renewable_share_pct = round(min(100.0, (generation_kw / consumption_kw) * 100.0), 1)
 
         return MissionSnapshot(

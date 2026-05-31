@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import sys
 from datetime import datetime
 
 from mission_monitor.display import print_snapshot
@@ -26,7 +25,11 @@ def interactive_loop(monitor: MissionMonitor) -> None:
         print("3 - Exportar ultimo relatorio (JSON)")
         print("4 - Gerar grafico do historico")
         print("0 - Sair")
-        choice = input("Escolha: ").strip()
+        try:
+            choice = input("Escolha: ").strip()
+        except EOFError:
+            print("\nEntrada nao disponivel neste ambiente. Use --steps para modo automatico.")
+            break
 
         if choice == "1":
             last_snapshot = monitor.next_snapshot()
@@ -83,10 +86,7 @@ def main() -> None:
         run_steps(monitor, args.steps)
         return
 
-    if sys.stdin.isatty():
-        interactive_loop(monitor)
-    else:
-        run_steps(monitor, 1)
+    interactive_loop(monitor)
 
 
 if __name__ == "__main__":
