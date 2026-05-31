@@ -1,7 +1,6 @@
 # Global Solution 2026 — Monitoramento de Missão Espacial
 
-> **Disciplina:** Ciência da Computação — FIAP  
-> **Tema:** Soluções em Energias Renováveis e Sustentáveis  
+> **Materia:** Soluções em Energias Renováveis e Sustentáveis  
 
 Sistema de monitoramento inteligente para uma missão espacial experimental. Simula, interpreta e visualiza dados operacionais de energia, temperatura, comunicação e status dos módulos da missão, com geração automática de alertas e tomada de decisão automatizada.
 
