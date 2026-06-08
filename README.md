@@ -111,4 +111,4 @@ Rm: 570706
 ## Links
 
 - **Repositório GitHub:**: https://github.com/kayoxshenderson-droid/global_solution_andre1.git
-- **Vídeo YouTube:** _(preencher)_
+- **Vídeo YouTube:** https://www.youtube.com/watch?v=ymYRrxJ7C0M
